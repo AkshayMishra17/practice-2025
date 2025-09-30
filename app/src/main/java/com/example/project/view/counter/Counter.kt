@@ -1,4 +1,4 @@
-package com.example.project.view
+package com.example.project.view.counter
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.project.vm.CounterVM
+import com.example.project.vm.counter.CounterVM
 
 @Composable
 fun CounterUI(viewModel: CounterVM) {

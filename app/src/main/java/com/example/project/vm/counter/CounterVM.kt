@@ -1,4 +1,4 @@
-package com.example.project.vm
+package com.example.project.vm.counter
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

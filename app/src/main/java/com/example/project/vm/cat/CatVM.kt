@@ -1,9 +1,9 @@
-package com.example.project.vm
+package com.example.project.vm.cat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.project.models.cat.Cat
 import com.example.project.nw.ApiObject
-import com.example.project.models.Cat
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 

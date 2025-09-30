@@ -9,11 +9,11 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.ViewModelProvider
+import com.example.project.nav.NavHost
 import com.example.project.ui.theme.ProjectTheme
-import com.example.project.view.CatUi
-import com.example.project.view.CounterUI
-import com.example.project.vm.CounterVM
+import com.example.project.view.name.NameUI
+import com.example.project.vm.name.NameVM
+import com.example.project.vm.product.ProductVM
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -21,11 +21,18 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val viewModel: CounterVM by viewModels()
+//            val viewModel: CounterVM by viewModels()
+//            val viewModel: TodoVM by viewModels()
+
+//            val viewModel: ProductVM by viewModels()
+            val viewModel : NameVM by viewModels()
             ProjectTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
 //                    CatUi()
-                    CounterUI(viewModel)
+//                    CounterUI(viewModel)
+//                    TodoUI(viewModel)
+//                    NavHost(viewModel)
+                    NameUI(viewModel)
                 }
             }
         }

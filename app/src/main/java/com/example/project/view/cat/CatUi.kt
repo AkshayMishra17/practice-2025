@@ -1,4 +1,4 @@
-package com.example.project.view
+package com.example.project.view.cat
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,7 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.example.project.vm.CatVM
+import com.example.project.vm.cat.CatVM
 
 @Composable
 fun CatUi(viewModel: CatVM = viewModel()) {

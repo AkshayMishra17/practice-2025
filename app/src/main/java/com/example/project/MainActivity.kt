@@ -9,10 +9,16 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.project.db.NoteDB
+import com.example.project.db.NotesRepository
 import com.example.project.nav.NavHost
 import com.example.project.ui.theme.ProjectTheme
 import com.example.project.view.name.NameUI
+import com.example.project.view.notes.NotesUI
 import com.example.project.vm.name.NameVM
+import com.example.project.vm.notes.NotesVM
+import com.example.project.vm.notes.NotesVMFactory
 import com.example.project.vm.product.ProductVM
 
 class MainActivity : ComponentActivity() {
@@ -21,18 +27,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-//            val viewModel: CounterVM by viewModels()
-//            val viewModel: TodoVM by viewModels()
+            val db = NoteDB.getDatabase(this)
+            val repo = NotesRepository(db.noteDao())
 
-//            val viewModel: ProductVM by viewModels()
-            val viewModel : NameVM by viewModels()
+            val viewModel : NotesVM = viewModel(
+                factory = NotesVMFactory(repo)
+            )
+
             ProjectTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                    CatUi()
-//                    CounterUI(viewModel)
-//                    TodoUI(viewModel)
-//                    NavHost(viewModel)
-                    NameUI(viewModel)
+                    NotesUI(viewModel)
                 }
             }
         }

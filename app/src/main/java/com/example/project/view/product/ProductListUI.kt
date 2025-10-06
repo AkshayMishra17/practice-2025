@@ -252,7 +252,7 @@ fun ProductBottomSheet(viewModel: ProductVM, onDismiss: () -> Unit) {
                 .fillMaxWidth()
                 .padding(16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(end = 16.dp) // Ensures last item is visible
+            contentPadding = PaddingValues(end = 16.dp)
         ) {
             items(product) { prod ->
                 Box(modifier = Modifier.width(190.dp).height(280.dp)) {

@@ -1,18 +1,22 @@
 package com.example.project.view.product
 
 import android.annotation.SuppressLint
+import android.graphics.Paint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -28,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -53,7 +58,7 @@ fun ProductListUI(viewModel: ProductVM,navController: NavController) {
     }
 
     Scaffold(
-        topBar = { ProductListingTopBar(navController) },
+        topBar = { ProductListingTopBar(navController,viewModel) },
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets,
         modifier = Modifier.statusBarsPadding()
 
@@ -149,26 +154,48 @@ fun ProductCardUI(product: Product,viewModel: ProductVM) {
 
 
 @Composable
-fun ProductListingTopBar(navController: NavController) {
+fun ProductListingTopBar(navController: NavController, viewModel: ProductVM) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color.LightGray),
+            .background(color = Color.LightGray)
+            .padding(horizontal = 10.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = "Product List",
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 10.dp).padding(horizontal = 10.dp)
         )
 
-        IconButton(onClick = {navController.navigate("cart")}) {
-            Icon(
-                imageVector = Icons.Default.ShoppingCart,
-                contentDescription = "Cart",
-                modifier = Modifier.size(28.dp)
-            )
+        Box(modifier = Modifier.padding(end = 16.dp),contentAlignment = Alignment.TopEnd) {
+            IconButton(onClick = { navController.navigate("cart") }) {
+                Icon(
+                    imageVector = Icons.Default.ShoppingCart,
+                    contentDescription = "Cart",
+                    modifier = Modifier.size(28.dp)
+                )
+            }
+
+            val cartItems by viewModel.cartProducts.collectAsState()
+            if (cartItems.isNotEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .size(18.dp)
+                        .offset(y = ((-4).dp))
+                        .align(Alignment.TopEnd)
+                        .background(Color.Red, shape = CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = if (cartItems.size > 9) "9+" else cartItems.size.toString(),
+                        fontSize = 12.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+            }
         }
     }
 }

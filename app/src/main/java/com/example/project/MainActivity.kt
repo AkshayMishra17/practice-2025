@@ -21,18 +21,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-//            val viewModel: CounterVM by viewModels()
-//            val viewModel: TodoVM by viewModels()
-
-//            val viewModel: ProductVM by viewModels()
-            val viewModel : NameVM by viewModels()
+            val viewModel : ProductVM by viewModels()
             ProjectTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                    CatUi()
-//                    CounterUI(viewModel)
-//                    TodoUI(viewModel)
-//                    NavHost(viewModel)
-                    NameUI(viewModel)
+                NavHost(viewModel)
                 }
             }
         }

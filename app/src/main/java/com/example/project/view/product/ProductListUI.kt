@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.example.project.MainActivity
 import com.example.project.models.product.Product
 import com.example.project.vm.product.ProductVM
 
@@ -78,23 +79,18 @@ fun ProductListUI(viewModel: ProductVM,navController: NavController) {
 
     ) { innerPadding ->
         if(isLoading.value){
-            Column(modifier = Modifier.fillMaxSize().padding(innerPadding),
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ){
                 CircularProgressIndicator(modifier = Modifier.size(32.dp))
             }
         }else {
-//            LazyVerticalGrid(
-//                columns = GridCells.Fixed(2),
-//                modifier = Modifier.padding(innerPadding),
-//                userScrollEnabled = true
-//            ) {
-//                items(productList.value) { product ->
-//                    ProductCardUI(product,viewModel)
-//                }
-//            }
-            Column(modifier = Modifier.fillMaxSize().padding(innerPadding),
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ){
@@ -133,7 +129,9 @@ fun ProductCardUI(product: Product,viewModel: ProductVM) {
             AsyncImage(
                 model = product.image,
                 contentDescription = "Product Image",
-                modifier = Modifier.fillMaxSize().padding(18.dp)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(18.dp)
             )
             Text(
                 text = product.price.toString(),
@@ -255,10 +253,13 @@ fun ProductBottomSheet(viewModel: ProductVM, onDismiss: () -> Unit) {
             contentPadding = PaddingValues(end = 16.dp)
         ) {
             items(product) { prod ->
-                Box(modifier = Modifier.width(190.dp).height(280.dp)) {
+                Box(modifier = Modifier
+                    .width(190.dp)
+                    .height(280.dp)) {
                     ProductCardUI(prod, viewModel)
                 }
             }
         }
     }
 }
+

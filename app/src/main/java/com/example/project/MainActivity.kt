@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.example.project.nav.NavHost
 import com.example.project.ui.theme.ProjectTheme
+import com.example.project.view.calculator.CalculatorUI
 import com.example.project.view.name.NameUI
 import com.example.project.vm.name.NameVM
 import com.example.project.vm.product.ProductVM
@@ -24,7 +25,8 @@ class MainActivity : ComponentActivity() {
             val viewModel : ProductVM by viewModels()
             ProjectTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                NavHost(viewModel)
+//                NavHost(viewModel)
+                    CalculatorUI()
                 }
             }
         }

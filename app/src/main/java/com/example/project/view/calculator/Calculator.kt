@@ -1,5 +1,7 @@
 package com.example.project.view.calculator
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -19,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +30,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun CalculatorUI() {
@@ -34,6 +40,7 @@ fun CalculatorUI() {
         "C", "D", "/", "*", "8", "7", "6", "-", "5", "4", "3", "+", "2", "1", "0", "="
     )
     var numberString by remember { mutableStateOf("") }
+    val scope =    rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -84,6 +91,21 @@ fun CalculatorUI() {
                                 "C" -> {
                                     numberString = ""
                                 }
+                                "=" -> {
+                                    scope.launch(Dispatchers.Default){
+                                        try {
+                                            val result = calculateExpression(numberString).toString()
+
+                                            launch(Dispatchers.Main) {
+                                                numberString = result
+                                            }                                        }catch (
+                                            e: Exception
+                                        ){
+                                            numberString = "Error"
+                                        }
+                                    }
+
+                                }
                                 else -> {
                                     numberString += dig
                                 }
@@ -102,4 +124,60 @@ fun CalculatorUI() {
             }
         }
     }
+}
+
+fun calculateExpression(expr: String): Any {
+    val tokens = expr.replace("\\s".toRegex(), "")
+    if (tokens.isEmpty()) return 0
+
+    val numbers = mutableListOf<Double>()
+    val operators = mutableListOf<Char>()
+
+    var num = ""
+    @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
+    fun applyOp() {
+        if (numbers.size >= 2 && operators.isNotEmpty()) {
+            val b = numbers.removeLast()
+            val a = numbers.removeLast()
+            val op = operators.removeLast()
+            numbers.add(
+                when (op) {
+                    '+' -> a + b
+                    '-' -> a - b
+                    '*' -> a * b
+                    '/' -> a / b
+                    else -> b
+                }
+            )
+        }
+    }
+
+    for (ch in tokens) {
+        when {
+            ch.isDigit() || ch == '.' -> num += ch
+            ch in listOf('+', '-', '*', '/') -> {
+                if (num.isNotEmpty()) {
+                    numbers.add(num.toDouble())
+                    num = ""
+                }
+                while (operators.isNotEmpty() &&
+                    precedence(operators.last()) >= precedence(ch)
+                ) {
+                    applyOp()
+                }
+                operators.add(ch)
+            }
+        }
+    }
+
+    if (num.isNotEmpty()) numbers.add(num.toDouble())
+    while (operators.isNotEmpty()) applyOp()
+
+    return numbers.last()
+}
+
+fun precedence(op: Char): Int = when (op) {
+    '+', '-' -> 1
+    '*', '/' -> 2
+    else -> 0
 }
